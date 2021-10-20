@@ -176,6 +176,10 @@
 		59F4604A1910DE2230D6FF5CD2F26D8F /* Scenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075AC827B55A0C9DAD86E5D59B3DDF0 /* Scenes.swift */; };
 		5A2FD4B234467D9BA8183C6615FDB529 /* AccessLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1451BBFE1BB7F2F0F7C2870F6B1C /* AccessLayer.swift */; };
 		5C3047A8D0BBEC9939CB672291896E57 /* LightHSLDefaultSetUnacknowledged.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4BE3B3EE90E4EC70D28F133B2B0F5F /* LightHSLDefaultSetUnacknowledged.swift */; };
+		5D4185692720125300E737BF /* MagicLevelGet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4185682720125300E737BF /* MagicLevelGet.swift */; };
+		5D41856B272012A600E737BF /* MagicLevelGetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D41856A272012A600E737BF /* MagicLevelGetStatus.swift */; };
+		5D41856D27201BA600E737BF /* MagicLevelSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D41856C27201BA600E737BF /* MagicLevelSet.swift */; };
+		5D41856F27201BEA00E737BF /* MagicLevelSetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D41856E27201BEA00E737BF /* MagicLevelSetStatus.swift */; };
 		5D66D6CCD903BED1AA469A03F0622896 /* ExclusionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AFCBBF66CDBB264896B32A75A6DC4D /* ExclusionList.swift */; };
 		5D776E450B460CBA8ADD9274D96604D0 /* LightCTLTemperatureSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806945D039EE79D2415E014EB1B6A5F3 /* LightCTLTemperatureSet.swift */; };
 		5EDE82DB2339FDA9575A7E66FBEE8222 /* MeshStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85B9B0C32E46B7FC19EDDB034BE4239 /* MeshStateManager.swift */; };
@@ -642,6 +646,10 @@
 		5AA1F177C3E873466F41E59F93BB88FF /* ApplicationKeys.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ApplicationKeys.swift; sourceTree = "<group>"; };
 		5D1064AE7769CE96C69DAF830939B26B /* Pods_nRFMeshProvision_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nRFMeshProvision_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D33BC06271B0627425B6283515933B5 /* FilterStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FilterStatus.swift; sourceTree = "<group>"; };
+		5D4185682720125300E737BF /* MagicLevelGet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLevelGet.swift; sourceTree = "<group>"; };
+		5D41856A272012A600E737BF /* MagicLevelGetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLevelGetStatus.swift; sourceTree = "<group>"; };
+		5D41856C27201BA600E737BF /* MagicLevelSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLevelSet.swift; sourceTree = "<group>"; };
+		5D41856E27201BEA00E737BF /* MagicLevelSetStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLevelSetStatus.swift; sourceTree = "<group>"; };
 		5D6ECF9361E78107F7181C4B0110ED32 /* BlockMode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BlockMode.swift; path = Sources/CryptoSwift/BlockMode/BlockMode.swift; sourceTree = "<group>"; };
 		5E3277879E1C4AACB8B75D547B1A6475 /* HMAC+Foundation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "HMAC+Foundation.swift"; path = "Sources/CryptoSwift/Foundation/HMAC+Foundation.swift"; sourceTree = "<group>"; };
 		5E6A48789B9E316A3DCAFB6E3029E1BB /* GenericLevelGet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GenericLevelGet.swift; sourceTree = "<group>"; };
@@ -1069,6 +1077,10 @@
 				DBDD89465A42904903BC3EF94DA167DE /* GenericPowerRangeSet.swift */,
 				3BFAEE717DF64771979446BD91333CA7 /* GenericPowerRangeSetUnacknowledged.swift */,
 				8ADB7316D69FCAC06A4BAA020192697A /* GenericPowerRangeStatus.swift */,
+				5D4185682720125300E737BF /* MagicLevelGet.swift */,
+				5D41856A272012A600E737BF /* MagicLevelGetStatus.swift */,
+				5D41856C27201BA600E737BF /* MagicLevelSet.swift */,
+				5D41856E27201BEA00E737BF /* MagicLevelSetStatus.swift */,
 			);
 			path = Generic;
 			sourceTree = "<group>";
@@ -2151,6 +2163,7 @@
 				2E67E150C0014A12F91600E4C51D1BD7 /* GenericDefaultTransitionTimeSetUnacknowledged.swift in Sources */,
 				1E352135D3F77246C5A5D91DDBD91BDB /* GenericDefaultTransitionTimeStatus.swift in Sources */,
 				71E50D3E96C70D3F1446E6487706EA8C /* GenericDeltaSet.swift in Sources */,
+				5D41856D27201BA600E737BF /* MagicLevelSet.swift in Sources */,
 				D1C8494E0F1A17D6A4D4DF5D3A0B451C /* GenericDeltaSetUnacknowledged.swift in Sources */,
 				E316D62DC15CF2702133032619B68886 /* GenericLevelGet.swift in Sources */,
 				7F9EE8B21E7D7887564038DF181F2227 /* GenericLevelSet.swift in Sources */,
@@ -2190,6 +2203,7 @@
 				0609777AF230ED178FBF061D019C4FFA /* Int+Hex.swift in Sources */,
 				F7FB208F175134DCD9EF88C22D5F3472 /* IvIndex.swift in Sources */,
 				1185696E11635F28313D7706665C2145 /* Key.swift in Sources */,
+				5D4185692720125300E737BF /* MagicLevelGet.swift in Sources */,
 				5F8D141424BFB7E8D425C5203A4BEBEB /* KeyedDecodingContainer+Legacy.swift in Sources */,
 				607B8329A0A6A32E7BDD9BECDFE241CF /* KeyIndex.swift in Sources */,
 				FA9BA0FB44F46D9E746475650FAC91BB /* KeyRefreshPhase.swift in Sources */,
@@ -2275,6 +2289,7 @@
 				B6D23717E20AFC790F56A358543B5B93 /* MeshData.swift in Sources */,
 				C1591F154D812624A53576A534E35E01 /* MeshLoggerDelegate.swift in Sources */,
 				0E2BB27F07549DA614FD60DE3C2BAB60 /* MeshMessage.swift in Sources */,
+				5D41856B272012A600E737BF /* MagicLevelGetStatus.swift in Sources */,
 				2B4B931B82BBD7AF1D1ED2FB546E8032 /* MeshMessageError.swift in Sources */,
 				5F1E64F0F86AFE3E96075A93B61B0067 /* MeshNetwork+Address.swift in Sources */,
 				B3CBD7FBE23CD44AF4E1E88EF8412B4A /* MeshNetwork+Groups.swift in Sources */,
@@ -2337,6 +2352,7 @@
 				E0DC0CED2940FE6763CBA4FDA305606C /* SceneClientHandler.swift in Sources */,
 				56F9BC8DA23BE43A08999AB8EC37ADBB /* SceneDelete.swift in Sources */,
 				8481F0DDBF2A4E548902A169A9B5A099 /* SceneDeleteUnacknowledged.swift in Sources */,
+				5D41856F27201BEA00E737BF /* MagicLevelSetStatus.swift in Sources */,
 				6EB2A99607B3F2F3FB5D61A246414CFE /* SceneGet.swift in Sources */,
 				7DD2FBA4DE6546D8CC3438798143C02D /* SceneNumber.swift in Sources */,
 				636951E6E39EFB76B402D09066ABC4AE /* SceneRange.swift in Sources */,
