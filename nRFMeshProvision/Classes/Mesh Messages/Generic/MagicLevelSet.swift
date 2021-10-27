@@ -68,30 +68,11 @@ public struct MagicLevelSet: AcknowledgedGenericMessage, TransactionMessage {
     }
     
     public init?(parameters: Data) {
-//        level = parameters.read(fromOffset: 0)
-//        tid = parameters[2]
-//        if parameters.count == 5 {
-//            transitionTime = TransitionTime(rawValue: parameters[3])
-//            delay = parameters[4]
-//        } else {
-//            transitionTime = nil
-//            delay = nil
-//        }
-        
-        Swift.print("the received params are : ")
-        Swift.print(parameters.count)
-        Swift.print(parameters[0])
-        Swift.print(parameters[1])
-        Swift.print(parameters[2])
-        Swift.print(parameters[3])
-        Swift.print(parameters[4])
-        
-        mIO = parameters.read(fromOffset: 0)
+        mIO = parameters[0]
         mIndex = parameters.read(fromOffset: 1)
-        mValue = parameters.read(fromOffset: 2)
-        mCorrelation = parameters.read(fromOffset: 3)
-        tid = parameters.read(fromOffset: 4)
-        
+        mValue = parameters.read(fromOffset: 3)
+        mCorrelation = parameters.read(fromOffset: 7)
+        tid = parameters[11]
     }
     
 }
