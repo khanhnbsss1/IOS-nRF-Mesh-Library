@@ -33,9 +33,7 @@ import Foundation
 
 public struct MagicLevelSet: AcknowledgedGenericMessage, TransactionMessage {
     public var tid: UInt8!
-        
-    public var delay: UInt8?
-    
+            
     public static let opCode: UInt32 = 0x8223
     public static let responseType: StaticMeshMessage.Type = MagicLevelSetStatus.self
     
@@ -52,7 +50,7 @@ public struct MagicLevelSet: AcknowledgedGenericMessage, TransactionMessage {
     public let mCorrelation: UInt32
             
     
-    /// Creates the Magic Level Get Status message.
+    /// Creates the Magic Level Set Status message.
     ///
     /// - parameters:
     ///   - io: The target io of the magic level server model.
@@ -60,7 +58,7 @@ public struct MagicLevelSet: AcknowledgedGenericMessage, TransactionMessage {
     ///   - value: The value in the LUT.
     ///   - correlation: The correlation value.
     ///   - tId: The target value of the Generic Level state.
-    public init(io: UInt8, index: UInt16, value: UInt32, correlation: UInt32, tId: UInt8) {
+    public init(io: UInt8, index: UInt16, value: UInt32, correlation: UInt32) {
         self.mIO = io
         self.mIndex = index
         self.mValue = value

@@ -31,22 +31,39 @@
 
 import Foundation
 
-public struct MagicLevelGet: AcknowledgedGenericMessage {
+public struct MagicLevelGet: AcknowledgedGenericMessage, TransactionMessage {
+    public var tid: UInt8!
     public static let opCode: UInt32 = 0x8224
     public static let responseType: StaticMeshMessage.Type = MagicLevelGetStatus.self
     
     public var parameters: Data? {
-        return nil
+        return Data() + mIO + mIndex + mCorrelation + tid
     }
     
-    public init() {
-        // Empty
+    public let mIO: UInt8
+    
+    public let mIndex: UInt16
+        
+    public let mCorrelation: UInt32
+    
+    /// Creates the Magic Level Get Status message.
+    ///
+    /// - parameters:
+    ///   - io: The target io of the magic level server model.
+    ///   - index: The target LUT index of the magic level server model.
+    ///   - correlation: The correlation value.
+    ///   - tId: The target value of the Generic Level state.
+    public init(io: UInt8, index: UInt16, correlation: UInt32) {
+        self.mIO = io
+        self.mIndex = index
+        self.mCorrelation = correlation
     }
     
     public init?(parameters: Data) {
-        guard parameters.isEmpty else {
-            return nil
-        }
+        mIO = parameters[0]
+        mIndex = parameters.read(fromOffset: 1)
+        mCorrelation = parameters.read(fromOffset: 3)
+        tid = parameters[7]
     }
     
 }
