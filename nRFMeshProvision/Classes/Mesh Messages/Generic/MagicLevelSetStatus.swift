@@ -69,6 +69,6 @@ public struct MagicLevelSetStatus: GenericMessage {
         mIndex = parameters.read(fromOffset: 1)
         mValue = parameters.read(fromOffset: 3)
         mCorrelation = parameters.read(fromOffset: 7)
-        tid = parameters[11]
+        tId = parameters[11]
     }
 }
