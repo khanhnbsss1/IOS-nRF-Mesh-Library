@@ -43,14 +43,14 @@ public struct MagicLevelSet: AcknowledgedGenericMessage, TransactionMessage {
         return Data() + mIO + mIndex + mValue + mCorrelation + tid
     }
     
-    public let mIO: Int
+    public let mIO: UInt8
     
-    public let mIndex: Int
+    public let mIndex: UInt16
     
-    public let mValue: Int16
+    public let mValue: UInt32
     
-    public let mCorrelation: Int16
-        
+    public let mCorrelation: UInt32
+            
     
     /// Creates the Magic Level Get Status message.
     ///
@@ -60,7 +60,7 @@ public struct MagicLevelSet: AcknowledgedGenericMessage, TransactionMessage {
     ///   - value: The value in the LUT.
     ///   - correlation: The correlation value.
     ///   - tId: The target value of the Generic Level state.
-    public init(io: Int, index: Int, value: Int16, correlation: Int16) {
+    public init(io: UInt8, index: UInt16, value: UInt32, correlation: UInt32, tId: UInt8) {
         self.mIO = io
         self.mIndex = index
         self.mValue = value
