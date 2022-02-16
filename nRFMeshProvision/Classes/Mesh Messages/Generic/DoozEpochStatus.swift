@@ -31,44 +31,59 @@
 
 import Foundation
 
-public struct MagicLevelSetStatus: GenericMessage {
-    public static var opCode: UInt32 = 0x8225
-    
+public struct DoozEpochStatus: GenericMessage {
+    public static var opCode: UInt32 = 0x8222
+
     public var parameters: Data? {
-        return Data() + mIO + mIndex + mValue + mCorrelation + tid
+        var data = Data() + tid
+        print("📣mPacked: \(mPacked) (\(String(mPacked, radix: 2)))")
+        print("📣mEpoch: \(mEpoch)")
+        print("📣mCorrelation: \(mCorrelation)")
+        data += mPacked
+        data += mEpoch
+        data += mCorrelation
+        if let extra = mExtra {
+            print("📣mExtra: \(String(describing: extra))")
+            data += UInt16(extra)
+        }
+        return data
     }
-    
-    public let mIO: UInt8
-    
-    public let mIndex: UInt16
-    
-    public let mValue: UInt32
-    
+
+    public let mPacked: UInt16
+    public let mEpoch: UInt32
     public let mCorrelation: UInt32
-    
+    public let mExtra: UInt16?
     public let tid: UInt8
-    
-    /// Creates the Magic Level Get Status message.
+
+    /// Creates the DoozEpochStatus message.
     ///
     /// - parameters:
-    ///   - io: The target io of the magic level server model.
-    ///   - index: The target LUT index of the magic level server model.
-    ///   - value: The value in the LUT.
-    ///   - correlation: The correlation value.
-    ///   - tid: The transaction id
-    public init(io: UInt8, index: UInt16, value: UInt32, correlation: UInt32, tid: UInt8) {
-        self.mIO = io
-        self.mIndex = index
-        self.mValue = value
+    ///   - packed               A bitmap containing the time zone, the command and the io of this message
+    ///   - epoch                The current Epoch
+    ///   - correlation          Correlation to link request / response
+    ///   - extra                RFU
+    ///   - tid                  Transaction id
+    public init(packed: UInt16, epoch: UInt32, correlation: UInt32, extra: UInt16?, tid: UInt8) {
+        self.mPacked = packed
+        self.mEpoch = epoch
         self.mCorrelation = correlation
+        self.mExtra = extra
         self.tid = tid
     }
-    
+
     public init?(parameters: Data) {
-        mIO = parameters[0]
-        mIndex = parameters.read(fromOffset: 1)
-        mValue = parameters.read(fromOffset: 3)
+        tid = parameters[0]
+        mPacked = parameters.read(fromOffset: 1)
+        print("📣mPacked: \(mPacked) (\(String(mPacked, radix: 2)))")
+        mEpoch = parameters.read(fromOffset: 3)
+        print("📣mEpoch: \(mEpoch)")
         mCorrelation = parameters.read(fromOffset: 7)
-        tid = parameters[11]
+        print("📣mCorrelation: \(mCorrelation)")
+        if parameters.count == 5 {
+            mExtra = parameters.read(fromOffset: 11)
+            print("📣mExtra: \(String(describing: mExtra))")
+        } else {
+            mExtra = nil
+        }
     }
 }
