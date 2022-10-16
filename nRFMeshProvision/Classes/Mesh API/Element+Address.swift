@@ -33,10 +33,17 @@ import Foundation
 public extension Element {
     
     /// Returns the Unicast Address of the Element.
+    ///
     /// For Elements not added to Node this returns the Element index
-    /// value as `Address`.
+    /// value as ``Address``.
     var unicastAddress: Address {
-        return (parentNode?.unicastAddress ?? 0) + Address(index)
+        return (parentNode?.primaryUnicastAddress ?? 0) + Address(index)
+    }
+    
+    /// Returns whether the Element is a Primary Element on the Node,
+    /// that is its index is equal to 0.
+    var isPrimary: Bool {
+        return index == 0
     }
     
 }

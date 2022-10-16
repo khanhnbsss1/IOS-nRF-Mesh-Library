@@ -33,13 +33,14 @@ import Foundation
 public extension MeshNetwork {
     
     /// Returns Provisioner's Node object, if such exist and the Provisioner
-    /// is in the mesh network.
+    /// is in the mesh network; `nil` otherwise.
     ///
+    /// The provisioner must be added to the network before calling this method,
+    /// otherwise `nil` is returned.
+    ///
+    /// - important: Provisioners without a Node assigned cannot send mesh messages
+    ///              (i.e. cannot configure nodes), but still can provision new devices.
     /// - parameter provisioner: The provisioner which node is to be returned.
-    ///                          The provisioner must be added to the network
-    ///                          before calling this method, otherwise `nil` will
-    ///                          be returned. Provisioners without a node assigned
-    ///                          do not support configuration operations.
     /// - returns: The Provisioner's node object, or `nil`.
     func node(for provisioner: Provisioner) -> Node? {
         guard hasProvisioner(provisioner) else {
@@ -66,7 +67,7 @@ public extension MeshNetwork {
         }
     }
     
-    /// Returns the Node with given Unicast Address. The address may
+    /// Returns the Node with the given Unicast Address. The address may
     /// be belong to any of the Node's Elements.
     ///
     /// - parameter address: A Unicast Address to look for.
@@ -76,8 +77,41 @@ public extension MeshNetwork {
             return nil
         }
         return nodes.first {
-            $0.hasAllocatedAddress(address)
+            $0.contains(elementWithAddress: address)
         }
+    }
+    
+    /// Returns a Node that matches the given Hash and Random, or `nil`.
+    ///
+    /// This method may be used to match the Node Identity beacon.
+    ///
+    /// - parameters:
+    ///   - hash:   The Hash value.
+    ///   - random: The Random value.
+    /// - returns: A Node that matches the given Hash and Random; or `nil` otherwise.
+    func node(matchingHash hash: Data, random: Data) -> Node? {
+        for node in nodes {
+            // Data are: 48 bits of Padding (0s), 64 bit Random and Unicast Address.
+            let data = Data(repeating: 0, count: 6) + random + node.primaryUnicastAddress.bigEndian
+            
+            for networkKey in node.networkKeys {
+                let calculatedHash = Crypto.calculateHash(from: data,
+                                                          usingIdentityKey: networkKey.keys.identityKey)
+                if calculatedHash == hash {
+                    return node
+                }
+                // If the Key Refresh Procedure is in place, the identity might have been
+                // generated with the old key.
+                if let oldIdentityKey = networkKey.oldKeys?.identityKey {
+                    let calculatedHash = Crypto.calculateHash(from: data,
+                                                              usingIdentityKey: oldIdentityKey)
+                    if calculatedHash == hash {
+                        return node
+                    }
+                }
+            }
+        }
+        return nil
     }
     
     /// Returns whether any of the Network Keys in the mesh network
@@ -93,7 +127,7 @@ public extension MeshNetwork {
     }
     
     /// Returns whether any of the Nodes in the mesh network matches
-    /// given Hash and Random. This is used to match the Node Identity beacon.
+    /// the given Hash and Random. This is used to match the Node Identity beacon.
     ///
     /// - parameters:
     ///   - hash:   The Hash value.
@@ -101,44 +135,28 @@ public extension MeshNetwork {
     /// - returns: `True` if the given parameters match any Node of this
     ///            mesh network; `false` otherwise.
     func matches(hash: Data, random: Data) -> Bool {
-        for node in nodes {
-            // Data are: 48 bits of Padding (0s), 64 bit Random and Unicast Address.
-            let data = Data(repeating: 0, count: 6) + random + node.unicastAddress.bigEndian
-            
-            for networkKey in node.networkKeys {
-                let calculatedHash = Crypto.calculateHash(from: data,
-                                                          usingIdentityKey: networkKey.keys.identityKey)
-                if calculatedHash == hash {
-                    return true
-                }
-                // If the Key Refresh Procedure is in place, the identity might have been
-                // generated with the old key.
-                if let oldIdentityKey = networkKey.oldKeys?.identityKey {
-                    let calculatedHash = Crypto.calculateHash(from: data,
-                                                              usingIdentityKey: oldIdentityKey)
-                    if calculatedHash == hash {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
+        return node(matchingHash: hash, random: random) != nil
     }
     
-    /// Adds the Node to the mesh network. If a node with the same UUID
-    /// was already in the mesh network, it will be replaced.
+    /// Adds the Node to the local database.
     ///
-    /// This method should only be used to add debug Nodes, or Nodes
-    /// that have already been provisioned. Use `provision(unprovisionedDevice:over)`
-    /// to provision and add a Node.
+    /// - important: This method should only be used to add debug Nodes, or Nodes
+    ///              that have already been provisioned.
+    ///              Use ``MeshNetworkManager/provision(unprovisionedDevice:over:)``
+    ///              to provision a Node to the mesh network.
     ///
     /// - parameter node: A Node to be added.
     /// - throws: This method throws if the Node's address is not available,
-    ///           the Node does not have a Network Key, or the Network Key does
-    ///           not belong to the mesh network.
+    ///           the Node does not have a Network Key, the Network Key does
+    ///           not belong to the mesh network, or a Node with the same UUID
+    ///           already exists in the network.
     func add(node: Node) throws {
+        // Make sure the Node does not exist already.
+        guard self.node(withUuid: node.uuid) == nil else {
+            throw MeshNetworkError.nodeAlreadyExist
+        }
         // Verify if the address range is available for the new Node.
-        guard isAddressRangeAvailable(node.unicastAddress, elementsCount: node.elementsCount) else {
+        guard isAddress(node.primaryUnicastAddress, availableFor: node) else {
             throw MeshNetworkError.addressNotAvailable
         }
         // Ensure the Network Key exists.
@@ -149,14 +167,28 @@ public extension MeshNetwork {
         guard networkKeys.contains(where: { $0.index == netKeyIndex }) else {
             throw MeshNetworkError.invalidKey
         }
-        remove(nodeWithUuid: node.uuid)
         
         node.meshNetwork = self
         nodes.append(node)
         timestamp = Date()
     }
     
-    /// Removes the Node from the mesh network.
+    /// Removes the Node from the local database.
+    ///
+    /// This method only removes the Node from the local database, but the Node
+    /// may still be able to interact with the network. To reset the Node
+    /// send a ``ConfigNodeReset`` message to the remote Node.
+    /// It will be removed from the local database automatically when
+    /// ``ConfigNodeResetStatus`` message is received.
+    ///
+    /// - important: Sending Config Node Reset message does not guarantee that the
+    ///              Node won't be able to communicate with the network. To make sure
+    ///              that the Node will not be able to send and receive messages from
+    ///              the network all the Network Keys (and optionaly Application Keys)
+    ///              known by the Node must to be updated using Key Refresh Procedure,
+    ///              or removed from other Nodes.
+    ///              See Bluetooth Mesh Profile 1.0.1, chapter: 3.10.7 Node Removal
+    ///              procedure.
     ///
     /// - parameter node: The Node to be removed.
     func remove(node: Node) {

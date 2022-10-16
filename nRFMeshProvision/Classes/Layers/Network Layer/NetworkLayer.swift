@@ -209,7 +209,7 @@ internal class NetworkLayer {
     func send(proxyConfigurationMessage message: ProxyConfigurationMessage) {
         guard let networkKey = proxyNetworkKey else {
             // The Proxy Network Key is unknown.
-            networkManager.manager.proxyFilter?
+            networkManager.manager.proxyFilter
                 .managerFailedToDeliverMessage(message, error: BearerError.bearerClosed)
             return
         }
@@ -217,7 +217,7 @@ internal class NetworkLayer {
         // If the Provisioner does not have a Unicast Address, just use a fake one
         // to configure the Proxy Server. This allows sniffing the network without
         // an option to send messages.
-        let source = meshNetwork.localProvisioner?.node?.unicastAddress ?? Address.maxUnicastAddress
+        let source = meshNetwork.localProvisioner?.node?.primaryUnicastAddress ?? Address.maxUnicastAddress
         logger?.i(.proxy, "Sending \(message) from: \(source.hex) to: 0000")
         let pdu = ControlMessage(fromProxyConfigurationMessage: message,
                                  sentFrom: source, usingNetworkKey: networkKey,
@@ -225,12 +225,12 @@ internal class NetworkLayer {
         logger?.i(.network, "Sending \(pdu)")
         do {
             try send(lowerTransportPdu: pdu, ofType: .proxyConfiguration, withTtl: pdu.ttl)
-            networkManager.manager.proxyFilter?.managerDidDeliverMessage(message)
+            networkManager.manager.proxyFilter.managerDidDeliverMessage(message)
         } catch {
             if case BearerError.bearerClosed = error {
                 proxyNetworkKey = nil
             }
-            networkManager.manager.proxyFilter?.managerFailedToDeliverMessage(message, error: error)
+            networkManager.manager.proxyFilter.managerFailedToDeliverMessage(message, error: error)
         }
     }
     
@@ -315,7 +315,7 @@ private extension NetworkLayer {
             
             // Store the last IV Index.
             defaults.set(meshNetwork.ivIndex.asMap, forKey: IvIndex.indexKey)
-            if lastIVIndex != meshNetwork.ivIndex || lastTransitionDate == nil {
+            if lastIVIndex != meshNetwork.ivIndex {
                 defaults.set(Date(), forKey: IvIndex.timestampKey)
                 
                 let ivRecovery = meshNetwork.ivIndex.index > lastIVIndex.index + 1 &&
@@ -379,7 +379,7 @@ private extension NetworkLayer {
         proxyNetworkKey = networkKey
         
         if justConnected || !ivIndexChanged {
-            networkManager.manager.proxyFilter?.newProxyDidConnect()
+            networkManager.manager.proxyFilter.newProxyDidConnect()
         }
     }
     
@@ -415,7 +415,7 @@ private extension NetworkLayer {
             logger?.i(.proxy, "\(message) received from: \(proxyPdu.source.hex) to: \(proxyPdu.destination.hex)")
             // Look for the proxy Node.
             let proxyNode = meshNetwork.node(withAddress: proxyPdu.source)
-            networkManager.manager.proxyFilter?.handle(message, sentFrom: proxyNode)
+            networkManager.manager.proxyFilter.handle(message, sentFrom: proxyNode)
         } else {
             logger?.w(.proxy, "Unsupported proxy configuration message (opcode: \(controlMessage.opCode))")
         }
@@ -431,7 +431,7 @@ private extension NetworkLayer {
     /// - returns: `True` if the address is a Unicast Address and belongs to
     ///            one of the local Node's elements; `false` otherwise.
     func isLocalUnicastAddress(_ address: Address) -> Bool {
-        return meshNetwork.localProvisioner?.node?.hasAllocatedAddress(address) ?? false
+        return meshNetwork.localProvisioner?.node?.contains(elementWithAddress: address) ?? false
     }
     
     /// Returns whether the PDU should loop back for local processing.
