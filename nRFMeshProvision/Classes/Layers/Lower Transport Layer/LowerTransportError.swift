@@ -30,15 +30,12 @@
 
 import Foundation
 
+/// A set of errors thrown from the transport layer.
 public enum LowerTransportError: Error {
     /// The segmented message has not been acknowledged before the timeout occurred.
     case timeout
     /// The target device is busy at the moment and could not accept the message.
     case busy
-    /// Thrown internally when a possible replay attack was detected.
-    /// This error is not propagated to higher levels, the packet is
-    /// being discarded.
-    case replayAttack
 }
 
 extension LowerTransportError: LocalizedError {
@@ -47,7 +44,6 @@ extension LowerTransportError: LocalizedError {
         switch self {
         case .timeout: return NSLocalizedString("Request timed out.", comment: "lowerTransport")
         case .busy:    return NSLocalizedString("Node is busy. Try later.", comment: "lowerTransport")
-        case .replayAttack: return NSLocalizedString("Possible replay attack detected", comment: "lowerTransport")
         }
     }
 

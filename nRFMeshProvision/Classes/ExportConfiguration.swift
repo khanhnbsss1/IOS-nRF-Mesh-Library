@@ -30,8 +30,7 @@
 
 import Foundation
 
-/// The export configuration allows to narrow down the exported configuration
-/// to required minimum.
+/// Allows to narrow down the exported configuration to a required minimum.
 ///
 /// For example, when sharing mesh network configuration with a guest, a separate
 /// Network Key and Application Key should be created to be used by the guest.
@@ -79,7 +78,7 @@ public enum ExportConfiguration {
         /// exported. Nodes belonging to excluded Provisioners will not be
         /// exported.
         case allWithDeviceKey
-        /// The same as `.all`, but device keys will not be exported.
+        /// The same as `.allWithDeviceKey`, but device keys will not be exported.
         case allWithoutDeviceKey
         /// The given Nodes will be exported. This allows to export Nodes with
         /// Device Key (full) or without Device Key (partial). The device on which

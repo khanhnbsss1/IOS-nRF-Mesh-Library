@@ -33,7 +33,9 @@ import Foundation
 /// This object contains list of excluded Unicast Addresses for particular IV Index.
 ///
 /// The excluded addresses cannot be assigned to new Nodes until the current IV Index
-/// is greater by 2 or more to the given one.
+/// is greater by 2 or more to the given one. At that point, the Seq Auth value
+/// (IV Index + Sequence number) is always greater than the value used by the deleted
+/// Node.
 ///
 /// - seeAlso: IvIndex
 internal class ExclusionList: Codable {
@@ -162,6 +164,33 @@ internal extension Array where Element ==  ExclusionList {
             .flatMap { $0.addresses }
     }
     
+    /// Checks whether the given Unicast Address range cannot be reassigned to
+    /// a new Node, as at least one of the addresses from the given range has
+    /// been used by a recently removed Node.
+    ///
+    /// Unicast Addresses may be excluded, as other Nodes may still keep the
+    /// Sequence number associated with those addresses and may discard packets
+    /// sent from them until the new Sequence number exceeds the saved one.
+    ///
+    /// A Unicast Address may be reassigned to a new Node when the IV Index
+    /// increments by at least 2 since the it has been excluded, after which
+    /// the Seq Auth value (IV Index + Sequence number) is always greater than
+    /// one used for the deleted Node.
+    ///
+    /// - parameters:
+    ///   - range:   The Unicast Address range to check.
+    ///   - ivIndex: The current IV Index.
+    /// - returns: `True` if at least one address from the given address range
+    ///             is excluded; `false` otherwise.
+    func contains(_ range: AddressRange, forIvIndex ivIndex: IvIndex) -> Bool {
+        guard count > 0 else {
+            return false
+        }
+        return !excludedAddresses(forIvIndex: ivIndex)
+            .filter { range.contains($0) }
+            .isEmpty
+    }
+    
     /// Checks whether the given Unicast Address should not be reassigned to
     /// a new Node, as it has been used by a Node that was recently removed.
     /// Other Nodes may still keep the Sequence number associated with this
@@ -172,6 +201,7 @@ internal extension Array where Element ==  ExclusionList {
     ///   - count:   Number of Elements to check.
     ///   - ivIndex: The current IV Index.
     /// - returns: `True` if the given address is excluded; `false` otherwise.
+    @available(*, deprecated, message: "Use contains(_:forIvIndex:) instead")
     func contains(_ address: Address, elementCount count: UInt8 = 1,
                     forIvIndex ivIndex: IvIndex) -> Bool {
         guard count > 0 else {

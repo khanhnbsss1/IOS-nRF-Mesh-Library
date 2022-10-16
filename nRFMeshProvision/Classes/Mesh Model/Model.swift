@@ -30,6 +30,9 @@
 
 import Foundation
 
+/// A Model defines the basic functionality of a ``Node``. A Node
+/// may include multiple models. A model defines the required states,
+/// the messages that act upon those states, and any associated behavior.
 public class Model: Codable {
     /// Bluetooth SIG-defined model identifier, of a vendor-defined model
     /// identifier. In the latter case, the first 4 bytes correspond to
@@ -56,12 +59,23 @@ public class Model: Codable {
     /// or Virtual Label UUIDs (32-character hexadecimal string).
     internal private(set) var subscribe: [String]
     /// Returns the list of known Groups that this Model is subscribed to.
+    /// Models on the Primary Element are also subscribed to the All Nodes address.
+    ///
     /// It may be that the Model is subscribed to some other Groups, which are
     /// not known to the local database, and those are not returned.
+    ///
     /// Use `isSubscribed(to:)` to check other Groups.
     public var subscriptions: [Group] {
-        return parentElement?.parentNode?.meshNetwork?.groups
-            .filter { subscribe.contains($0.groupAddress ) } ?? []
+        // A model may be additionally subscribed to any special address
+        // except from All Nodes.
+        let subscribableSpecialGroups = Group.specialGroups
+            .filter { $0 != .allNodes }
+        let groups = parentElement?.parentNode?.meshNetwork?.groups ?? []
+        let result = (groups + subscribableSpecialGroups)
+            .filter { subscribe.contains($0.groupAddress) }
+        // Models on the primary Element are always subscribed to the All Nodes
+        // address.
+        return (parentElement?.isPrimary ?? false) ? result + [.allNodes] : result
     }
     /// The configuration of this Model's publication.
     public private(set) var publish: Publish?
@@ -101,7 +115,7 @@ public class Model: Codable {
         if let publish = model.publish, applicationKeys.contains(where: { $0.index == publish.index }) {
             let publishAddress = publish.publicationAddress.address
             guard publishAddress.isSpecialGroup ||
-                 (publishAddress.isUnicast && nodes.contains(where: { $0.hasAllocatedAddress(publishAddress) })) ||
+                 (publishAddress.isUnicast && nodes.contains(where: { $0.contains(elementWithAddress: publishAddress) })) ||
                  (publishAddress.isGroup && groups.contains(where: { $0.groupAddress == publish.address })) else {
                 return
             }
