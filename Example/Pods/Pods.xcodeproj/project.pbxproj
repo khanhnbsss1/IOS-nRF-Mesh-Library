@@ -348,6 +348,12 @@
 		AE2949A77ECC9C8020A894C9A6CA6C44 /* LightLCLightOnOffStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E901C559701073C6BA5096F38775A02 /* LightLCLightOnOffStatus.swift */; };
 		B0A44F429311C06F36BF65E11237A93C /* TimeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E069ADCDFA46D3054FDB7516967BDFA7 /* TimeSet.swift */; };
 		B207D930367D15D108464D86EDCCE20A /* SensorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE204D6C2216E4297F70166C6CA8A328 /* SensorMessage.swift */; };
+		B20910E428FBE5FE00ED3E63 /* DoozEpochSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20910E328FBE5FE00ED3E63 /* DoozEpochSet.swift */; };
+		B20910E628FBE60800ED3E63 /* DoozEpochStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20910E528FBE60800ED3E63 /* DoozEpochStatus.swift */; };
+		B20910EB28FBE61400ED3E63 /* MagicLevelSetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20910E728FBE61400ED3E63 /* MagicLevelSetStatus.swift */; };
+		B20910EC28FBE61400ED3E63 /* MagicLevelSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20910E828FBE61400ED3E63 /* MagicLevelSet.swift */; };
+		B20910ED28FBE61400ED3E63 /* MagicLevelGetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20910E928FBE61400ED3E63 /* MagicLevelGetStatus.swift */; };
+		B20910EE28FBE61400ED3E63 /* MagicLevelGet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20910EA28FBE61400ED3E63 /* MagicLevelGet.swift */; };
 		B2FC384980ACDBDF8F4CB5E5377838C1 /* ConfigNetKeyUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E45C481C1D94C414F78E2F1296C9DB /* ConfigNetKeyUpdate.swift */; };
 		B300E85836656195F6AE4A3272C1E413 /* MeshNetwork+Provisioner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD84F87A084594ABBAC7C60A6BE70C /* MeshNetwork+Provisioner.swift */; };
 		B44DD9D7AFC872F3869FA92F33FED29B /* CryptoSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 34D3F6AA57C18155AF121F6EE688C1DC /* CryptoSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -875,6 +881,12 @@
 		AF5B7E022639CDC0AEE4DACC1C0B4820 /* BigUInt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BigUInt.swift; path = Sources/CryptoSwift/CS_BigInt/BigUInt.swift; sourceTree = "<group>"; };
 		B0487F325EF34CFAE7727A33C25662B0 /* Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		B0A5571169541A9D6281FDDFE00E6C75 /* LowerTransportError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LowerTransportError.swift; sourceTree = "<group>"; };
+		B20910E328FBE5FE00ED3E63 /* DoozEpochSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoozEpochSet.swift; sourceTree = "<group>"; };
+		B20910E528FBE60800ED3E63 /* DoozEpochStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoozEpochStatus.swift; sourceTree = "<group>"; };
+		B20910E728FBE61400ED3E63 /* MagicLevelSetStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagicLevelSetStatus.swift; sourceTree = "<group>"; };
+		B20910E828FBE61400ED3E63 /* MagicLevelSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagicLevelSet.swift; sourceTree = "<group>"; };
+		B20910E928FBE61400ED3E63 /* MagicLevelGetStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagicLevelGetStatus.swift; sourceTree = "<group>"; };
+		B20910EA28FBE61400ED3E63 /* MagicLevelGet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagicLevelGet.swift; sourceTree = "<group>"; };
 		B24CAE7B505771A6D2964A6C658C9796 /* MeshUUID.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MeshUUID.swift; sourceTree = "<group>"; };
 		B33393C9C306C6CC98F1DD6CD5B31D44 /* Floating Point Conversion.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Floating Point Conversion.swift"; path = "Sources/CryptoSwift/CS_BigInt/Floating Point Conversion.swift"; sourceTree = "<group>"; };
 		B358060949A7E7328A17F181B8447E41 /* ProxyConfigurationMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProxyConfigurationMessage.swift; sourceTree = "<group>"; };
@@ -1115,6 +1127,12 @@
 		152FD68987840FBD5D83D2D7B8D0D979 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
+				B20910EA28FBE61400ED3E63 /* MagicLevelGet.swift */,
+				B20910E928FBE61400ED3E63 /* MagicLevelGetStatus.swift */,
+				B20910E828FBE61400ED3E63 /* MagicLevelSet.swift */,
+				B20910E728FBE61400ED3E63 /* MagicLevelSetStatus.swift */,
+				B20910E528FBE60800ED3E63 /* DoozEpochStatus.swift */,
+				B20910E328FBE5FE00ED3E63 /* DoozEpochSet.swift */,
 				64A74A9764E2EB065D3D267B4B890A52 /* GenericBatteryGet.swift */,
 				FE3C70A091C842E5A3600748E8E721B2 /* GenericBatteryStatus.swift */,
 				5616B560EA42FA8D5C81A8A1A9259C01 /* GenericDefaultTransitionTimeGet.swift */,
@@ -2240,6 +2258,7 @@
 				237D11EA58170CB7A34158BBC92C1F63 /* ConfigCompositionDataGet.swift in Sources */,
 				3BD3EDD7CC6D23E9DAC4D727053F3270 /* ConfigCompositionDataStatus.swift in Sources */,
 				CBA491D88159893B804558B8A209A9BA /* ConfigDefaultTtlGet.swift in Sources */,
+				B20910EE28FBE61400ED3E63 /* MagicLevelGet.swift in Sources */,
 				31682E0E31D2D1DC80DA862B6CCC6C5F /* ConfigDefaultTtlSet.swift in Sources */,
 				F64F198F01293D34E935B702B6A55593 /* ConfigDefaultTtlStatus.swift in Sources */,
 				9B6D697462B11CB83BB9C15E0B0B7F0F /* ConfigFriendGet.swift in Sources */,
@@ -2274,6 +2293,7 @@
 				0584B1F225CBC4C60D318FB5ACE2DCFB /* ConfigModelSubscriptionStatus.swift in Sources */,
 				788C26879A8A18987942500AE5F68FC5 /* ConfigModelSubscriptionVirtualAddressAdd.swift in Sources */,
 				75CA7773A73CA98B71834A3F6CBF1372 /* ConfigModelSubscriptionVirtualAddressDelete.swift in Sources */,
+				B20910E428FBE5FE00ED3E63 /* DoozEpochSet.swift in Sources */,
 				8F411ACF0583497BF91C417F99CDCA6A /* ConfigModelSubscriptionVirtualAddressOverwrite.swift in Sources */,
 				65F40CA988591A07CED61EE176E10362 /* ConfigNetKeyAdd.swift in Sources */,
 				B649BF26484F61B839E93878912DBA6C /* ConfigNetKeyDelete.swift in Sources */,
@@ -2324,12 +2344,14 @@
 				970A85C45C1475B8B262597F95DBCD06 /* GenericDefaultTransitionTimeGet.swift in Sources */,
 				A4F2304502421D7A7EE48C049B4EE1DA /* GenericDefaultTransitionTimeSet.swift in Sources */,
 				1382D89B662ADCF3E51986D53C38F61E /* GenericDefaultTransitionTimeSetUnacknowledged.swift in Sources */,
+				B20910ED28FBE61400ED3E63 /* MagicLevelGetStatus.swift in Sources */,
 				6E2D46CC60036A0A01D64607262F9CBF /* GenericDefaultTransitionTimeStatus.swift in Sources */,
 				9D190A661C2DF184DD341D6DB8AED651 /* GenericDeltaSet.swift in Sources */,
 				98E63D1603D2F2838E28227112D50806 /* GenericDeltaSetUnacknowledged.swift in Sources */,
 				DE2A8613074AADB386CA92C9AA1B8341 /* GenericLevelGet.swift in Sources */,
 				936606211F62B98F5AEB680F080A6395 /* GenericLevelSet.swift in Sources */,
 				39546B10B0417102FF46796BC89B38FD /* GenericLevelSetUnacknowledged.swift in Sources */,
+				B20910EB28FBE61400ED3E63 /* MagicLevelSetStatus.swift in Sources */,
 				3564F6497A97767F7287AFAC59B08190 /* GenericLevelStatus.swift in Sources */,
 				ADA7617A8EC26B3426CD52902056C081 /* GenericLocationGlobalGet.swift in Sources */,
 				640F433A8E28C1E119266314529ED7FC /* GenericLocationGlobalSet.swift in Sources */,
@@ -2407,6 +2429,7 @@
 				02245F6CA602AB328FC6EFCF8365AF42 /* LightHSLSaturationSetUnacknowledged.swift in Sources */,
 				7B5C1C7AA164CFD8BCEFAD099BAB477F /* LightHSLSaturationStatus.swift in Sources */,
 				218F8A02289743ED12D8D51FEFECB9B3 /* LightHSLSet.swift in Sources */,
+				B20910E628FBE60800ED3E63 /* DoozEpochStatus.swift in Sources */,
 				FC1B50A375574CA35FB595C5EF4636CF /* LightHSLSetUnackowledged.swift in Sources */,
 				FD9BF2448BC41AF7C3F1AFBE24B45916 /* LightHSLStatus.swift in Sources */,
 				6C1F80FE4F1DA06C6AAFB8A1B1641732 /* LightHSLTargetGet.swift in Sources */,
@@ -2549,6 +2572,7 @@
 				BF4458B85EBAD1DBAB67CACFC3E6FAE1 /* SensorCadenceStatus.swift in Sources */,
 				5527087A9BF3B23FEF2EE728DB725F40 /* SensorColumnGet.swift in Sources */,
 				319E3AA7A43C45192645C4C3A80AB2BF /* SensorColumnStatus.swift in Sources */,
+				B20910EC28FBE61400ED3E63 /* MagicLevelSet.swift in Sources */,
 				6F019466DA9719898753FE2CA9657082 /* SensorDescriptorGet.swift in Sources */,
 				535FA970A49C4AC40847416AD23D6C0E /* SensorDescriptorStatus.swift in Sources */,
 				1FDD504DAF089A2CCA80C7D02DB55715 /* SensorGet.swift in Sources */,
